@@ -167,12 +167,12 @@ function handleNewReplySubmit(event) {
   }
 
   const formData = { writtenBy, replyBody };
-
+  
   fetch(`/api/comments/${pizzaId}/${commentId}`, {
     method: 'PUT',
     headers: {
       Accept: 'application/json',
-      'Content-Type': 'application/json'`
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify(formData)
   })
