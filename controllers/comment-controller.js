@@ -55,11 +55,12 @@ const commentController = {
       })
       .catch((err) => res.json(err));
   },
+  
   addReply({ params, body }, res) {
     Comment.findOneAndUpdate(
       { _id: params.commentId },
       { $push: { replies: body } },
-      { new: true }
+      { new: true, runValidators: true }
     )
       .then((dbPizzaData) => {
         if (!dbPizzaData) {
@@ -70,6 +71,7 @@ const commentController = {
       })
       .catch((err) => res.json(err));
   },
+
   removeReply({ params }, res) {
     Comment.findOneAndUpdate(
       { _id: params.commentId },
