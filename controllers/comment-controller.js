@@ -4,7 +4,7 @@ const commentController = {
   //add comment to pizza
   // add comment to pizza
   addComment({ params, body }, res) {
-    console.log(body);
+    console.log(params);
     //create a comment
     Comment.create(body)
       //take the just created comment's id
@@ -27,6 +27,23 @@ const commentController = {
       })
       .catch((err) => res.json(err));
   },
+
+  addReply({ params, body }, res) {
+    Comment.findOneAndUpdate(
+      { _id: params.commentId },
+      { $push: { replies: body } },
+      { new: true, runValidators: true }
+    )
+      .then((dbPizzaData) => {
+        if (!dbPizzaData) {
+          res.status(404).json({ message: "No pizza found with this id!" });
+          return;
+        }
+        res.json(dbPizzaData);
+      })
+      .catch((err) => res.json(err));
+  },
+
   //remove comment
   removeComment({ params }, res) {
     //find the comment with this id and delete it from the collection
@@ -55,39 +72,17 @@ const commentController = {
       })
       .catch((err) => res.json(err));
   },
-  
-  addReply({ params, body }, res) {
-    Comment.findOneAndUpdate(
-      { _id: params.commentId },
-      { $push: { replies: body } },
-      { new: true, runValidators: true }
-    )
-      .then((dbPizzaData) => {
-        if (!dbPizzaData) {
-          res.status(404).json({ message: "No pizza found with this id!" });
-          return;
-        }
-        res.json(dbPizzaData);
-      })
-      .catch((err) => res.json(err));
-  },
 
+  // remove reply
   removeReply({ params }, res) {
     Comment.findOneAndUpdate(
       { _id: params.commentId },
-      { $pull: { replies: { replyId: params.replyId }} },
+      { $pull: { replies: { replyId: params.replyId } } },
       { new: true }
     )
-      .then((dbPizzaData) => {
-        if (!dbPizzaData) {
-          res.status(404).json({ message: "No pizza found with this id!" });
-          return;
-        }
-        res.json(dbPizzaData);
-      })
+      .then((dbPizzaData) => res.json(dbPizzaData))
       .catch((err) => res.json(err));
   },
 };
-
 
 module.exports = commentController;
