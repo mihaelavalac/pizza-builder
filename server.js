@@ -12,7 +12,7 @@ app.use(express.static('public'));
 app.use(require('./routes'));
 
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/pizza-builder', {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://mihaela09:Af8T9kXXrYMP4@cluster0.9s7yo.mongodb.net/pizza_builder_db?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });

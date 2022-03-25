@@ -1,4 +1,4 @@
-const { Pizza } = require("../models");
+const { Pizza } = require("../models/index.js");
 
 const pizzaController = {
   // get all pizzas
